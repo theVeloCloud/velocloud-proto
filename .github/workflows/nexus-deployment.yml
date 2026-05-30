@@ -1,44 +1,35 @@
-name: Proto java deployment
+name: Publish to Reposilite
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
 
 jobs:
-  build:
+  publish:
+    runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
-    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Set up Gradle dependencies cache
-        uses: actions/cache@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: 21
+          restore-keys: ${{ runner.os }}-gradle-
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build Launcher with Gradle
-        run: ./gradlew :shadowJar
-
-      - name: Publish java sdk to Sonatype
-        env:
-          ossrhUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-          ossrhPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+      - name: Publish to Reposilite
         run: ./gradlew publish
+        env:
+          REPOSILITE_USER: ${{ secrets.REPOSILITE_USER }}
+          REPOSILITE_SECRET: ${{ secrets.REPOSILITE_SECRET }}

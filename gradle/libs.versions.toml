@@ -1,5 +1,3 @@
 [versions]
-nexus-publish = "2.0.0"
 
 [plugins]
-nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }

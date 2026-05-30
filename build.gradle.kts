@@ -4,12 +4,11 @@ plugins {
     id("java-library")
     id("com.google.protobuf") version "0.9.6"
     id("com.gradleup.shadow") version "9.0.0"
-    alias(libs.plugins.nexus.publish)
 
     `maven-publish`
 }
 
-group = "dev.httpmarco.polocloud"
+group = "de.snenjih.velocloud"
 version = "3.0.0-pre.8-SNAPSHOT"
 
 val grpcVersion = "1.78.0"
@@ -90,9 +89,9 @@ publishing {
             artifact(tasks.shadowJar.get())
 
             pom {
-                name.set("polocloud-proto")
-                description.set("PoloCloud gRPC API with bundled dependencies")
-                url.set("https://github.com/thePolocloud/polocloud")
+                name.set("velocloud-proto")
+                description.set("VeloCloud gRPC API with bundled dependencies")
+                url.set("https://github.com/theVeloCloud/velocloud")
 
                 licenses {
                     license {
@@ -107,25 +106,27 @@ publishing {
                     }
                 }
                 scm {
-                    url.set("https://github.com/thePolocloud/polocloud")
-                    connection.set("scm:git:https://github.com/thePolocloud/polocloud.git")
-                    developerConnection.set("scm:git:https://github.com/thePolocloud/polocloud.git")
+                    url.set("https://github.com/theVeloCloud/velocloud")
+                    connection.set("scm:git:https://github.com/theVeloCloud/velocloud.git")
+                    developerConnection.set("scm:git:https://github.com/theVeloCloud/velocloud.git")
                 }
             }
         }
     }
-}
 
-nexusPublishing {
     repositories {
-        sonatype {
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/releases/"))
-            snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
-
-            username.set(System.getenv("ossrhUsername") ?: "")
-            password.set(System.getenv("ossrhPassword") ?: "")
+        maven {
+            name = "reposilite"
+            url = uri(
+                if (version.toString().endsWith("-SNAPSHOT"))
+                    "https://repo.snenjih.de/snapshots"
+                else
+                    "https://repo.snenjih.de/releases"
+            )
+            credentials {
+                username = System.getenv("REPOSILITE_USER") ?: ""
+                password = System.getenv("REPOSILITE_SECRET") ?: ""
+            }
         }
     }
-    // todo find a better way to determine if we are in a staging or release build
-    useStaging.set(!project.rootProject.version.toString().endsWith("-SNAPSHOT"))
 }
