@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "de.snenjih.velocloud"
-version = "3.0.5"
+version = "3.0.6"
 
 val grpcVersion = "1.78.0"
 val protobufVersion = "3.25.8"
