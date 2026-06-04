@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package de.snenjih.velocloud.v1.proto;
+
+import "google/protobuf/empty.proto";
+
+option java_package = "de.snenjih.velocloud.v1.database";
+option java_multiple_files = true;
+
+service DatabaseConfigController {
+  rpc fetchCloudDatabaseConfig(google.protobuf.Empty) returns (DatabaseConfigResponse);
+}
+
+message DatabaseConfigResponse {
+  bool   configured = 1;
+  string host       = 2;
+  int32  port       = 3;
+  string database   = 4;
+  string username   = 5;
+  string password   = 6;
+  int32  pool_size  = 7;
+}
