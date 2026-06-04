@@ -12,7 +12,7 @@ group = "de.snenjih.velocloud"
 version = "3.0.7"
 
 val grpcVersion = "1.78.0"
-val protobufVersion = "3.25.8"
+val protobufVersion = "4.35.0"
 
 repositories {
     mavenCentral()
