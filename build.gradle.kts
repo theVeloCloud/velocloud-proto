@@ -11,7 +11,7 @@ plugins {
 group = "de.snenjih.velocloud"
 version = "3.0.7"
 
-val grpcVersion = "1.78.0"
+val grpcVersion = "1.81.0"
 val protobufVersion = "3.25.8"
 
 repositories {
